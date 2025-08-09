@@ -1,6 +1,25 @@
 server:
   port: 8080
 
+# Eureka client configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+
+# Gateway routing rules
 spring:
-  application:
-    name: api-gateway
+  cloud:
+    gateway:
+      routes:       
+        - id: discovery-server-route
+          uri: lb://discovery-server 
+          predicates:
+            - Path=/eureka/**
+
+  # Security configuration to validate JWTs
+  security:
+    oauth2:
+      resourceserver:
+        jwt:         
+          issuer-uri: http://localhost:9000
