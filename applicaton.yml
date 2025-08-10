@@ -10,8 +10,8 @@ eureka:
 
 logging:
   level:
-    org.springframework.security: DEBUG
-    com.trading: DEBUG
+    org.springframework.security: TRACE
+    com.trading: TRACE
 
 # ---Prod Profile Properties ---
 ---
