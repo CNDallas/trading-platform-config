@@ -41,3 +41,7 @@ spring:
                 - Path=/test/**
               filters:
                 - RewritePath=/test/(?<segment>.*), /$\{segment}
+            - id: auth-server-oidc-route
+              uri: lb://auth-server
+              predicates:
+                - Path=/.well-known/**
