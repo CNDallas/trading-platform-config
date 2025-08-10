@@ -15,11 +15,22 @@ spring:
         - id: discovery-server-route
           uri: lb://discovery-server 
           predicates:
-            - Path=/eureka/**
+            - Path=/eureka/**            
+        - id: test-service-route
+          uri: lb://test-service
+          predicates:
+            - Path=/test/**
+          filters:
+            - RewritePath=/test/(?<segment>.*), /$\{segment}
 
   # Security configuration to validate JWTs
   security:
-    oauth2:
+    oauth2:            
       resourceserver:
         jwt:         
           issuer-uri: http://localhost:9000
+          registration:
+            client-id: gateway
+            client-secret: secret
+
+
