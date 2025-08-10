@@ -30,10 +30,6 @@ spring:
               uri: lb://discovery-server
               predicates:
                 - Path=/eureka/**
-            - id: auth-server-login-route
-              uri: lb://auth-server
-              predicates:
-                - Path=/login/**
             - id: test-service-route
               uri: lb://test-service
               predicates:
@@ -41,7 +37,7 @@ spring:
               filters:
                 - RewritePath=/test/(?<segment>.*), /$\{segment}
             - id: auth-server
-                uri: lb://auth-server
+                uri: lb://auth-server-login-route
                 predicates:
                   - Path=/.well-known/**,/oauth2/**,/login,/logout,/consent
                 preserveHostHeader: true 
