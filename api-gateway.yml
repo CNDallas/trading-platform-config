@@ -22,6 +22,9 @@ spring:
                   - GET
                   - POST
                 allowedHeaders: "*"
+          default-filters:
+            - PreserveHostHeader
+                  
           routes:
             - id: discovery-server-route
               uri: lb://discovery-server
