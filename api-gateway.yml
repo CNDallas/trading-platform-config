@@ -10,17 +10,17 @@ eureka:
 # Gateway routing rules
 spring:
   cloud:
-    gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]': 
-            allowedOrigins: "http://localhost:3000" 
-            allowedMethods:
-              - GET
-              - POST
-            allowedHeaders: "*"
+    gateway:      
       server:
         webflux:
+          globalcors:
+            cors-configurations:
+              '[/**]': 
+                allowedOrigins: "http://localhost:3000" 
+                allowedMethods:
+                  - GET
+                  - POST
+                allowedHeaders: "*"
           routes:
             - id: discovery-server-route
               uri: lb://discovery-server
