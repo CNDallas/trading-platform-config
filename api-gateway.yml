@@ -23,14 +23,7 @@ spring:
           filters:
             - RewritePath=/test/(?<segment>.*), /$\{segment}
 
-  # Security configuration to validate JWTs
-  security:
-    oauth2:            
-      resourceserver:
-        jwt:         
-          issuer-uri: http://localhost:9000
-          registration:
-            client-id: gateway
-            client-secret: secret
+
+
 
 
