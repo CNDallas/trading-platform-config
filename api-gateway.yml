@@ -7,6 +7,13 @@ spring:
     gateway:      
       server:
         webflux:
+          forwarded:
+            enabled: true
+          x-forwarded:
+            enabled: true
+            proto-enabled: true
+            host-enabled: true
+            port-enabled: true
           globalcors:
             cors-configurations:
               '[/**]': 
@@ -24,18 +31,15 @@ spring:
               uri: lb://auth-server
               predicates:
                 - Path=/login/**
-            # This line is now correctly indented
-            - id: auth-server-oauth-route
-              uri: lb://auth-server
-              predicates:
-                - Path=/oauth2/**
             - id: test-service-route
               uri: lb://test-service
               predicates:
                 - Path=/test/**
               filters:
                 - RewritePath=/test/(?<segment>.*), /$\{segment}
-            - id: auth-server-oidc-route
+            - id: auth-server
               uri: lb://auth-server
               predicates:
-                - Path=/.well-known/**
+                - Path=/auth/.well-known/**,/auth/oauth2/**,/auth/login,/auth/logout,/auth/consent
+              filters:
+                - StripPrefix=1
