@@ -38,8 +38,7 @@ spring:
               filters:
                 - RewritePath=/test/(?<segment>.*), /$\{segment}
             - id: auth-server
-              uri: lb://auth-server
-              predicates:
-                - Path=/auth/.well-known/**,/auth/oauth2/**,/auth/login,/auth/logout,/auth/consent
-              filters:
-                - StripPrefix=1
+                uri: lb://auth-server
+                predicates:
+                  - Path=/.well-known/**,/oauth2/**,/login,/logout,/consent
+                preserveHostHeader: true 
