@@ -14,38 +14,38 @@ spring:
                   - GET
                   - POST
                 allowedHeaders: "*"
-      routes:
-        # Route for the discovery server dashboard
-        - id: discovery-server-route
-          uri: lb://discovery-server
-          predicates:
-            - Path=/eureka/**
+          routes:
+            # Route for the discovery server dashboard
+            - id: discovery-server-route
+              uri: lb://discovery-server
+              predicates:
+                - Path=/eureka/**
 
-        # Route for the test service API
-        - id: test-service-route
-          uri: lb://test-service
-          predicates:
-            - Path=/test/**
-          filters:
-            - RewritePath=/test/(?<segment>.*), /$\{segment}
+            # Route for the test service API
+            - id: test-service-route
+              uri: lb://test-service
+              predicates:
+                - Path=/test/**
+              filters:
+                - RewritePath=/test/(?<segment>.*), /$\{segment}
 
-        - id: auth-server-oidc-route
-          uri: lb://auth-server
-          predicates:
-            - Path=/.well-known/**
-          filters:
-            - PreserveHostHeader
+            - id: auth-server-oidc-route
+              uri: lb://auth-server
+              predicates:
+                - Path=/.well-known/**
+              filters:
+                - PreserveHostHeader
 
-        - id: auth-server-oauth-route
-          uri: lb://auth-server
-          predicates:
-            - Path=/oauth2/**
-          filters:
-            - PreserveHostHeader
+            - id: auth-server-oauth-route
+              uri: lb://auth-server
+              predicates:
+                - Path=/oauth2/**
+              filters:
+                - PreserveHostHeader
 
-        - id: auth-server-login-route
-          uri: lb://auth-server
-          predicates:
-            - Path=/login, /logout, /consent
-          filters:
-            - PreserveHostHeader
+            - id: auth-server-login-route
+              uri: lb://auth-server
+              predicates:
+                - Path=/login, /logout, /consent
+              filters:
+                - PreserveHostHeader
