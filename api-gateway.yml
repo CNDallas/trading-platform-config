@@ -1,43 +1,51 @@
 server:
   port: 8080
 
-# Gateway routing rules
 spring:
   cloud:
-    gateway:      
+    gateway:
       server:
         webflux:
-          forwarded:
-            enabled: true
-          x-forwarded:
-            enabled: true
-            proto-enabled: true
-            host-enabled: true
-            port-enabled: true
           globalcors:
             cors-configurations:
-              '[/**]': 
-                allowedOrigins: "http://localhost:3000" 
+              '[/**]':
+                allowedOrigins: "http://localhost:3000"
                 allowedMethods:
                   - GET
                   - POST
                 allowedHeaders: "*"
-          default-filters:
+      routes:
+        # Route for the discovery server dashboard
+        - id: discovery-server-route
+          uri: lb://discovery-server
+          predicates:
+            - Path=/eureka/**
+
+        # Route for the test service API
+        - id: test-service-route
+          uri: lb://test-service
+          predicates:
+            - Path=/test/**
+          filters:
+            - RewritePath=/test/(?<segment>.*), /$\{segment}
+
+        - id: auth-server-oidc-route
+          uri: lb://auth-server
+          predicates:
+            - Path=/.well-known/**
+          filters:
             - PreserveHostHeader
-                  
-          routes:
-            - id: discovery-server-route
-              uri: lb://discovery-server
-              predicates:
-                - Path=/eureka/**
-            - id: test-service-route
-              uri: lb://test-service
-              predicates:
-                - Path=/test/**
-              filters:
-                - RewritePath=/test/(?<segment>.*), /$\{segment}
-            - id: auth-server-login-route
-                uri: lb://auth-server
-                predicates:
-                  - Path=/.well-known/**,/oauth2/**,/login,/logout,/consent
-                preserveHostHeader: true 
+
+        - id: auth-server-oauth-route
+          uri: lb://auth-server
+          predicates:
+            - Path=/oauth2/**
+          filters:
+            - PreserveHostHeader
+
+        - id: auth-server-login-route
+          uri: lb://auth-server
+          predicates:
+            - Path=/login, /logout, /consent
+          filters:
+            - PreserveHostHeader
