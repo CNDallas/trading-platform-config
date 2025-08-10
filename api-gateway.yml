@@ -13,22 +13,23 @@ spring:
     gateway:
       server:
         webflux:
-          routes:      
-          - id: discovery-server-route
-            uri: lb://discovery-server 
-            predicates:
-              - Path=/eureka/**
-          - id: auth-server-login-route
-            uri: lb://auth-server
-            predicates:
-              - Path=/login/**
-           - id: auth-server-oauth-route
-            uri: lb://auth-server
-            predicates:
-              - Path=/oauth2/**            
-          - id: test-service-route
-            uri: lb://test-service
-            predicates:
-              - Path=/test/**
-            filters:
-              - RewritePath=/test/(?<segment>.*), /$\{segment}
+          routes:
+            - id: discovery-server-route
+              uri: lb://discovery-server
+              predicates:
+                - Path=/eureka/**
+            - id: auth-server-login-route
+              uri: lb://auth-server
+              predicates:
+                - Path=/login/**
+            # This line is now correctly indented
+            - id: auth-server-oauth-route
+              uri: lb://auth-server
+              predicates:
+                - Path=/oauth2/**
+            - id: test-service-route
+              uri: lb://test-service
+              predicates:
+                - Path=/test/**
+              filters:
+                - RewritePath=/test/(?<segment>.*), /$\{segment}
