@@ -33,19 +33,13 @@ spring:
               uri: lb://auth-server
               predicates:
                 - Path=/.well-known/**
-              filters:
-                - PreserveHostHeader
 
             - id: auth-server-oauth-route
               uri: lb://auth-server
               predicates:
                 - Path=/oauth2/**
-              filters:
-                - PreserveHostHeader
 
             - id: auth-server-login-route
               uri: lb://auth-server
               predicates:
                 - Path=/login, /logout, /consent
-              filters:
-                - PreserveHostHeader
